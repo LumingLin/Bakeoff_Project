@@ -32,7 +32,7 @@ public class ClassifyVibration extends PApplet {
 	float[] prev_spec = new float[bands];
 	float prev_volume = 0; 
 	int training_finished = 0;
-	int num_samples = 3;
+	int num_samples = 6;
 	float[] sound_samples = new float[num_samples * bands]; 
 	
 	PlaySound play;
@@ -69,6 +69,8 @@ public class ClassifyVibration extends PApplet {
 		/* select microphone device */
 		s.inputDevice(6);
 		    
+		
+		
 		/* create an Input stream which is routed into the FFT analyzer */
 		fft = new FFT(this, bands);
 		in = new AudioIn(this, 0);
@@ -144,8 +146,9 @@ public class ClassifyVibration extends PApplet {
 				maxCount = 0;
 				guessedLabels.clear();
 				play = new PlaySound();
-				play.playSound(guessedLabel_stablized);
+//				play.playSound(guessedLabel_stablized);
 			}
+			println(guessedLabel_stablized);
 			text("classified as: " + guessedLabel_stablized, 20, 30);
 			
 			
@@ -184,7 +187,7 @@ public class ClassifyVibration extends PApplet {
 		}
 			
 		else {
-			if(classIndex != 0 && volume < 5E-6)
+			if(classIndex != 0 && volume < 0.4)
 				println("\\");
 			else {
 				println("//");
