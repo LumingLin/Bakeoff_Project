@@ -102,14 +102,16 @@ public class ClassifyVibration extends PApplet {
 		endShape();
 
 		fft.analyze(spectrum);
+		
+		volume = 0; 
 
 		//sound_samples.length = bands(512) * num_samples
 		for(int j = 0; j < bands * (num_samples - 1); j++) {
 			sound_samples[j] = sound_samples[j + bands]; //remove 0 - 511, move 511-1023 to 0 - 511
+			volume += sound_samples[j];
 		}
 		
 		for(int i = 0; i < bands; i++){
-			volume = 0;
 			/* the result of the FFT is normalized */
 			/* draw the line for frequency band i scaling it up by 40 to get more amplitude */
 			line( i, height, i, height - spectrum[i]*height*40);
@@ -118,7 +120,6 @@ public class ClassifyVibration extends PApplet {
 			fftFeatures[i] = spectrum[i];
 			volume += spectrum[i];
 			sound_samples[bands * (num_samples - 1) + i] = spectrum[i];
-			volume += spectrum[i];
 		} 
 
 		fill(255);
@@ -183,7 +184,7 @@ public class ClassifyVibration extends PApplet {
 		}
 			
 		else {
-			if(classIndex != 0 && (volume < 5E-6 || volume < prev_volume))
+			if(classIndex != 0 && volume < 5E-6)
 				println("\\");
 			else {
 				println("//");
